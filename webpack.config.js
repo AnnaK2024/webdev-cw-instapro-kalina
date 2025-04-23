@@ -1,7 +1,6 @@
 module.exports = {
-    entry: './index.js', // Входной файл, где пишем свой код
+    entry: './index.js', // Точка входа для приложения
     output: {
-        filename: 'main.js', // Выходной файл, который подключаем к HTML
-        // Сохранится он по пути "./dist/main.js"
+        filename: 'main.js', // Имя скомпилированного файла
     },
 }
