@@ -74,10 +74,9 @@ export function uploadImage({ file }) {
 }
 
 export const addPost = ({ description, imageUrl }) => {
-    return fetch(baseHost +'', {
+    return fetch(postsHost, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`, // Если требуется авторизация
         },
         body: JSON.stringify({ description, imageUrl }), // Отправляем данные поста
