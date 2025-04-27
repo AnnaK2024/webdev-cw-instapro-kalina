@@ -2,11 +2,6 @@ import { renderHeaderComponent } from './header-component'
 import { renderUploadImageComponent } from './upload-image-component'
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
-    /**
-     * URL изображения, загруженного пользователем при регистрации.
-     * Используется только в режиме регистрации.
-     * @type {string}
-     */
     let imageUrl = ''
 
     const render = () => {
@@ -40,7 +35,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
                             </div>    
                             <label>
                             Опишите фотографию:
-                            <textarea class="input textarea" rows="4"></textarea>
+                            <textarea class="input textarea" rows="4" id="description-input"></textarea>
                             </label>
                             <button class="button" id="add-button">Добавить</button>
                         </div>
@@ -57,9 +52,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         })
 
         // Добавляем изображение
-        const addingImage = appEl.querySelector(
-            '.upload-image',
-        )
+        const addingImage = appEl.querySelector('.upload-image')
         if (addingImage) {
             renderUploadImageComponent({
                 element: addingImage,
@@ -70,9 +63,10 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         }
 
         document.getElementById('add-button').addEventListener('click', () => {
+            const description = document.getElementById('description-input').value; // Получаем описание
             onAddPostClick({
-                description: 'Описание картинки',
-                imageUrl: 'https://image.png',
+                description: description,
+                imageUrl: imageUrl || 'default-image-url.png', // Используем imageUrl или значение по умолчанию, если оно не задано
             })
         })
     }

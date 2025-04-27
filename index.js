@@ -1,4 +1,4 @@
-import { getPosts } from './api.js'
+import { addPost, getPosts } from './api.js'
 import { renderAddPostPageComponent } from './components/add-post-page-component.js'
 import { renderAuthPageComponent } from './components/auth-page-component.js'
 import {
@@ -109,10 +109,16 @@ const renderApp = () => {
     if (page === ADD_POSTS_PAGE) {
         return renderAddPostPageComponent({
             appEl,
-            onAddPostClick({ description, imageUrl }) {
-                // @TODO: реализовать добавление поста в API
-                console.log('Добавляю пост...', { description, imageUrl })
-                goToPage(POSTS_PAGE)
+            onAddPostClick: ({ description, imageUrl }) => {
+                addPost({ description, imageUrl })
+                    .then((newPost) => {
+                        console.log('Пост добавлен:', newPost)
+                        goToPage(POSTS_PAGE) // Перейти на страницу постов после добавления
+                    })
+                    .catch((error) => {
+                        console.error('Ошибка при добавлении поста:', error)
+                        // Здесь можно добавить обработку ошибок, например, показать уведомление пользователю
+                    })
             },
         })
     }
