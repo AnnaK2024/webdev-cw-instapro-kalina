@@ -1,13 +1,8 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
 const personalKey = 'kalina'
-const baseHost = 'https://wedev-api.sky.pro'
+const baseHost = ' https://wedev-api.sky.pro'
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
-
-export let token = ''
-export const setToken = (newToken) => {
-    token = newToken
-}
 
 export function getPosts({ token }) {
     return fetch(postsHost, {
@@ -73,11 +68,11 @@ export function uploadImage({ file }) {
     })
 }
 
-export const addPost = ({ description, imageUrl }) => {
+export const addPost = ({token, description, imageUrl }) => {
     return fetch(postsHost, {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${token}`, // Если требуется авторизация
+            Authorization: token, // Если требуется авторизация
         },
         body: JSON.stringify({ description, imageUrl }), // Отправляем данные поста
     }).then((response) => {
