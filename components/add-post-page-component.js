@@ -52,7 +52,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         })
 
         // Добавляем изображение
-        const addingImage = appEl.querySelector('.upload-image')
+        const addingImage = document.querySelector('.upload-image-container')
         if (addingImage) {
             renderUploadImageComponent({
                 element: addingImage,
@@ -63,10 +63,11 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         }
 
         document.getElementById('add-button').addEventListener('click', () => {
-            const description = document.getElementById('description-input').value; // Получаем описание
+            const description =
+                document.getElementById('description-input').value // Получаем описание
             onAddPostClick({
                 description: description,
-                imageUrl: imageUrl || 'default-image-url.png', // Используем imageUrl или значение по умолчанию, если оно не задано
+                imageUrl: imageUrl,
             })
         })
     }

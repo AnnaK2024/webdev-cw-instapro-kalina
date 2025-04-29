@@ -109,10 +109,10 @@ const renderApp = () => {
     if (page === ADD_POSTS_PAGE) {
         return renderAddPostPageComponent({
             appEl,
-            onAddPostClick: ({ description, imageUrl }) => {
-                addPost({token: getToken(), description, imageUrl })
-                    .then((newPost) => {
-                        console.log('Пост добавлен:', newPost)
+            onAddPostClick({ description, imageUrl }) {
+                addPost({ token: getToken(), description, imageUrl })
+                    .then(() => {
+                        console.log('Пост добавлен:')
                         goToPage(POSTS_PAGE) // Перейти на страницу постов после добавления
                     })
                     .catch((error) => {
