@@ -15,7 +15,7 @@ import {
     removeUserFromLocalStorage,
     saveUserToLocalStorage,
 } from './helpers.js'
-import { renderUserPostsPageComponent } from './components/renderUserPostsPageComponent.js'
+import { renderUserPostsPageComponent } from './components/userPostsPageComponent.js'
 
 export let user = getUserFromLocalStorage()
 export let page = null
@@ -68,7 +68,7 @@ export const goToPage = (newPage, data) => {
         }
 
         if (newPage === USER_POSTS_PAGE) {
-            // @@TODO: реализовать получение постов юзера из API
+            // получение постов юзера из API
             console.log('Открываю страницу пользователя: ', data.userId)
 
             page = LOADING_PAGE
@@ -130,11 +130,11 @@ const renderApp = () => {
                 addPost({ token: getToken(), description, imageUrl })
                     .then(() => {
                         console.log('Пост добавлен:')
-                        goToPage(POSTS_PAGE) // Перейти на страницу постов после добавления
+                        goToPage(POSTS_PAGE)
                     })
                     .catch((error) => {
-                        console.error('Ошибка при добавлении поста:', error)
-                        // Здесь можно добавить обработку ошибок, например, показать уведомление пользователю
+                        console.error(error)
+                        alert('Ошибка при добавлении поста')
                     })
             },
         })

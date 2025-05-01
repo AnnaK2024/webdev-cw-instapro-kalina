@@ -1,18 +1,10 @@
 import { renderHeaderComponent } from './header-component'
 import { renderUploadImageComponent } from './upload-image-component'
 
-export function renderAddPostPageComponent({ appEl, posts }) {
-    if (!posts || posts.length === 0) {
-        appEl.innerHTML = `<p>У этого пользователя нет публикаций</p>`
-        return
-    }
-
-    const authorPosts = posts[0].user
+export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     
-
-
     const render = () => {
-        const postsHtml = `
+        const appHtml = `
             <div class="page-container">
             <div class="header-container"></div>
             <div class="form">

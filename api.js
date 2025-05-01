@@ -1,5 +1,3 @@
-// Замени на свой, чтобы получить независимый от других набор данных.
-// "боевая" версия инстапро лежит в ключе prod
 const personalKey = 'kalina'
 const baseHost = ' https://wedev-api.sky.pro'
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
@@ -21,20 +19,6 @@ export function getPosts({ token }) {
         .then((data) => {
             return data.posts
         })
-}
-
-export function getUserPosts({ token, userId }) {
-    return fetch(`${postsHost}/user-posts/${userId}`, {
-        method: 'GET',
-        headers: {
-            Authorization: token,
-        },
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error('Ошибка при получении постов пользователя')
-        }
-        return response.json()
-    })
 }
 
 export function registerUser({ login, password, name, imageUrl }) {
@@ -91,8 +75,78 @@ export const addPost = ({ token, description, imageUrl }) => {
         body: JSON.stringify({ description, imageUrl, forceError: true }), // Отправляем данные поста
     }).then((response) => {
         if (response.status === 400) {
-            throw new Error('Запрос содержит ошибку')
+            throw new Error('При запросе произошла ошибка')
         }
         return response.json() // Возвращаем данные о новом посте
     })
 }
+
+export function getUserPosts({ token, userId }) {
+    return fetch(`${postsHost}/user-posts/${userId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error('Ошибка при получении постов пользователя')
+        }
+        return response.json()
+    })
+}
+
+export function deletePost({ token, postId }) {
+    return fetch(`${postsHost}/${postId}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        if (response.status === 401) {
+            throw new Error('В процессе удаления поста произошла ошибка')
+        }
+
+        return response.json()
+    })
+}
+
+export function addLikePost({ token, postId }) {
+    return fetch(`${postsHost}/${postId}/like`, {
+        method: 'POST',
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            if (response.status === 401) {
+                throw new Error(
+                    'Чтобы поставить лайк, необходимо авторизоваться',
+                )
+            }
+
+            throw new Error(
+                'При выполнении операции Поставить лайк произошла ошибка',
+            )
+        }
+    })
+}
+
+export function removeLikePost({ token, postId }) {
+    return fetch(`${postsHost}/${postId}/dislike`, {
+        method: 'POST',
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error(
+                'При выполнении операции Убрать лайк произошла ошибка',
+            )
+        }
+
+        return response.json()
+    })
+}
+
