@@ -68,18 +68,16 @@ export function uploadImage({ file }) {
     })
 }
 
-export const addPost = ({token, description, imageUrl }) => {
+export const addPost = ({ token, description, imageUrl }) => {
     return fetch(postsHost, {
         method: 'POST',
         headers: {
-            Authorization: token, // Если требуется авторизация
+            Authorization: token,
         },
-        body: JSON.stringify({ description, imageUrl }), // Отправляем данные поста
+        body: JSON.stringify({ description, imageUrl, forceError: true }), // Отправляем данные поста
     }).then((response) => {
-        if (!response.ok) {
-            throw new Error(
-                'Ошибка при добавлении поста: ' + response.statusText,
-            )
+        if (response.status === 400) {
+            throw new Error('Запрос содержит ошибку')
         }
         return response.json() // Возвращаем данные о новом посте
     })

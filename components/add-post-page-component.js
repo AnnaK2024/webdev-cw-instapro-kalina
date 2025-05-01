@@ -52,7 +52,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         })
 
         // Добавляем изображение
-        const addingImage = document.querySelector('.upload-image-container')
+        const addingImage = document.querySelector('.upload-image')
         if (addingImage) {
             renderUploadImageComponent({
                 element: addingImage,
@@ -63,11 +63,28 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         }
 
         document.getElementById('add-button').addEventListener('click', () => {
-            const description =
+            const imageDescription =
                 document.getElementById('description-input').value // Получаем описание
+            const imageUploadUrl = imageUrl
+
+            if (!imageDescription && !imageUploadUrl) {
+                alert('Загрузите фото и добавьте к нему описание')
+                return
+            }
+
+            if (!imageDescription) {
+                alert('Добавьте описание к посту')
+                return
+            }
+
+            if (!imageUploadUrl) {
+                alert('Загрузите фото')
+                return
+            }
+
             onAddPostClick({
-                description: description,
-                imageUrl: imageUrl,
+                description: imageDescription,
+                imageUrl: imageUploadUrl,
             })
         })
     }
