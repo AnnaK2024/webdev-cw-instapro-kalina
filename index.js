@@ -88,7 +88,6 @@ export const goToPage = (newPage, data) => {
                     console.error(error)
                     goToPage(POSTS_PAGE)
                 })
-        
         }
 
         page = newPage

@@ -1,3 +1,5 @@
+
+
 .page-container {
   padding: 0 20px;
 }
@@ -6,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #369496;
   padding: 20px 16px;
   margin-left: -20px;
   margin-right: -20px;
@@ -27,10 +29,11 @@
   padding: 0;
   border: none;
   background-color: transparent;
-  font-size: 14px;
+  font-size: 18px;
   line-height: 18px;
   font-weight: 500;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .logout-button {
@@ -68,7 +71,7 @@
   height: 500px;
   display: flex;
   justify-content: center;
-  background-color: #e0e0e0;
+  background-color: #d8f3ef;
 }
 
 .post-image {
@@ -176,9 +179,11 @@
   text-align: center;
 }
 
-.file-upload-image-conrainer {
+.file-upload-image-container {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .file-upload-image {
@@ -188,6 +193,7 @@
   margin-right: 10px;
   border: 1px solid gray;
   border-radius: 5px;
+  margin-bottom: 15px;
 }
 
 .file-upload-label {
@@ -196,3 +202,42 @@
   width: 100%;
   text-align: center;
 }
+.post-user-header{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.post-user-content{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.post-header__user-data{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.password-container {
+  display: flex;
+  position: relative;
+}
+input[type="password"], input[type="text"] {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  font-size: 16px;
+  height: 36px;
+  box-sizing: border-box;
+  line-height: 18px;
+  color: rgb(4, 18, 27);
+  border: none;
+  border-radius: 5px;
+  background-color: #7fdfe2;
+}
+.toggle-visibility {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+

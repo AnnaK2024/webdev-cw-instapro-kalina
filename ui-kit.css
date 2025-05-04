@@ -31,11 +31,16 @@ body {
   overflow: auto;
   font-size: 14px;
   line-height: 18px;
+  background-color: #d8f3ef;
 }
 
 /* скрывает скролбары в chrome */
 body::-webkit-scrollbar {
   display: none;
+}
+#app{
+  margin: 0 auto;
+  width: 60%;
 }
 
 p {
@@ -46,10 +51,10 @@ p {
 .secondary-button {
   display: block;
   padding: 10px 13px 13px;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: 16px;
+  line-height: 16px;
   border-radius: 5px;
-  background-color: #565eef;
+  background-color: #369496;
   color: #ffffff;
   border: none;
 }
@@ -59,12 +64,12 @@ p {
   border: 0;
   padding: 0;
   background: none;
-  color: #565eef;
+  color: #369496;
   cursor: pointer;
 }
 
 .button:hover {
-  background-color: #6d73ff;
+  background-color: #f2eeff;
 }
 
 .button[disabled="true"],
@@ -75,12 +80,12 @@ p {
 }
 
 .button:active {
-  background-color: #4f56ce;
+  background-color: #7fdfe2;
 }
 
 .secondary-button {
-  background-color: #edecff;
-  color: #565eef;
+  background-color: #7fdfe2;
+  color: #369496;
 }
 
 .secondary-button:hover {
@@ -88,7 +93,7 @@ p {
 }
 
 .secondary-button:active {
-  background-color: #d8d7ff;
+  background-color: #7fdfe2;
 }
 
 .input {
@@ -100,7 +105,7 @@ p {
   color: rgb(4, 18, 27);
   border: none;
   border-radius: 5px;
-  background-color: #e8e8e8;
+  background-color: #7fdfe2;
 }
 
 .input .-error {

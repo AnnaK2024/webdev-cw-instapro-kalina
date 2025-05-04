@@ -3,7 +3,7 @@ import { renderHeaderComponent } from './header-component.js'
 import { getToken, goToPage, user } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { clearingHtml } from '../helpers.js'
+import { addImageClickListener, clearingHtml } from '../helpers.js'
 import {
     initLikeComponent,
     renderModalLikesListUser,
@@ -48,9 +48,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                             <img src="${post.user.imageUrl}" class="post-header__user-image">
                             <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
                         </div>
-                        <div>
-                            <button data-post-id="${post.id}" class="header-button delete-post-button">xxx</button>
-                        </div>
+
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src="${post.imageUrl}">
@@ -100,6 +98,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
     initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), USER_POSTS_PAGE)
     renderModalLikesListUser(posts)
+    addImageClickListener()
 
     console.log('Актуальный список постов', posts)
 

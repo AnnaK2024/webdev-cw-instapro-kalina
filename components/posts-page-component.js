@@ -3,7 +3,7 @@ import { renderHeaderComponent } from './header-component.js'
 import { posts, goToPage, getToken } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { clearingHtml } from '../helpers.js'
+import { addImageClickListener, clearingHtml } from '../helpers.js'
 import { initLikeComponent, renderModalLikesList } from './initLikesComponent.js'
 import { deletePostComponent } from './deletePostComponent.js'
 
@@ -38,9 +38,7 @@ export function renderPostsPageComponent({ appEl }) {
                             <img src="${post.user.imageUrl}" class="post-header__user-image">
                             <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
                         </div>
-                        <div>
-                            <button data-post-id="${post.id}" class="header-button delete-post-button">удалить пост</button>
-                        </div>
+
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src="${post.imageUrl}">
@@ -84,6 +82,7 @@ export function renderPostsPageComponent({ appEl }) {
     initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), POSTS_PAGE)
     renderModalLikesList(posts)
+    addImageClickListener()
 
     renderHeaderComponent({
         element: document.querySelector('.header-container'),

@@ -1,4 +1,5 @@
 import { uploadImage } from '../api.js'
+import { addImageClickListener } from '../helpers.js'
 
 /**
  * Компонент загрузки изображения.
@@ -61,6 +62,7 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
                     imageUrl = fileUrl // Сохраняем URL загруженного изображения
                     onImageUrlChange(imageUrl) // Уведомляем о изменении URL изображения
                     render() // Перерисовываем компонент с новым состоянием
+                    addImageClickListener() // Добавляем обработчик клика для новых изображений
                 })
             }
         })
@@ -73,7 +75,9 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
                 onImageUrlChange(imageUrl) // Уведомляем об изменении URL изображения
                 render() // Перерисовываем компонент
             })
+        addImageClickListener() // Добавляем обработчик клика для новых изображений
     }
+    addImageClickListener()
 
     // Инициализация компонента
     render()
