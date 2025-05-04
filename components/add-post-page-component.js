@@ -2,7 +2,8 @@ import { renderHeaderComponent } from './header-component'
 import { renderUploadImageComponent } from './upload-image-component'
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
-    
+    let imageUrl = ''
+
     const render = () => {
         const appHtml = `
             <div class="page-container">

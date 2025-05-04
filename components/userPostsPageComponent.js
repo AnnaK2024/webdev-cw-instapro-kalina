@@ -97,11 +97,11 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
     console.log(user)
     appEl.innerHTML = appHtml
 
-    initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), post)
+    initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), USER_POSTS_PAGE)
     renderModalLikesListUser(posts)
 
-    console.log('Актуальный список постов:', posts)
+    console.log('Актуальный список постов', posts)
 
     renderHeaderComponent({
         element: document.querySelector('.header-container'),
