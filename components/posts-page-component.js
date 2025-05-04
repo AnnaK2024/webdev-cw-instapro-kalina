@@ -1,9 +1,11 @@
-import { USER_POSTS_PAGE } from '../routes.js'
+import { POSTS_PAGE, USER_POSTS_PAGE } from '../routes.js'
 import { renderHeaderComponent } from './header-component.js'
-import { posts, goToPage } from '../index.js'
+import { posts, goToPage, getToken } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { clearingHtml } from '../helpers.js'
+import { initLikeComponent, renderModalLikesList } from './initLikesComponent.js'
+import { deletePostComponent } from './deletePostComponent.js'
 
 export function renderPostsPageComponent({ appEl }) {
     const postsHtml = posts
@@ -78,6 +80,10 @@ export function renderPostsPageComponent({ appEl }) {
     </div>`
 
     appEl.innerHTML = appHtml
+
+    initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
+    deletePostComponent(getToken(), POSTS_PAGE)
+    renderModalLikesList(posts)
 
     renderHeaderComponent({
         element: document.querySelector('.header-container'),

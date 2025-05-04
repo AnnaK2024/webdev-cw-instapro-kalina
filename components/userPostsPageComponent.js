@@ -1,9 +1,14 @@
 import { USER_POSTS_PAGE } from '../routes.js'
 import { renderHeaderComponent } from './header-component.js'
-import { goToPage, user } from '../index.js'
+import { getToken, goToPage, user } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { clearingHtml } from '../helpers.js'
+import {
+    initLikeComponent,
+    renderModalLikesListUser,
+} from './initLikesComponent.js'
+import { deletePostComponent } from './deletePostComponent.js'
 
 export function renderUserPostsPageComponent({ appEl, posts }) {
     if (!posts || posts.length === 0) {
@@ -91,6 +96,10 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
 
     console.log(user)
     appEl.innerHTML = appHtml
+
+    initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), post)
+    deletePostComponent(getToken(), USER_POSTS_PAGE)
+    renderModalLikesListUser(posts)
 
     console.log('Актуальный список постов:', posts)
 

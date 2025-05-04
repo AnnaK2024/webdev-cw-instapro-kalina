@@ -1,4 +1,5 @@
-import { addingLikesPosts, removeLikesPosts } from '../api.js'
+
+import { addLikePost, removeLikePost } from '../api.js'
 import { goToPage } from '../index.js'
 import { AUTH_PAGE } from '../routes.js'
 
@@ -29,9 +30,9 @@ export const initLikeComponent = (
                 let updatePost
 
                 if (isLiked) {
-                    updatePost = await removeLikesPosts({ token, postId })
+                    updatePost = await removeLikePost({ token, postId })
                 } else {
-                    updatePost = await addingLikesPosts({
+                    updatePost = await addLikePost({
                         token,
                         postId,
                     })

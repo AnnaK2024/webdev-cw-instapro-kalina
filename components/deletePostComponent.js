@@ -1,4 +1,5 @@
-import { deletePosts } from '../api.js'
+
+import { deletePost } from '../api.js'
 import { goToPage, user } from '../index.js'
 import { AUTH_PAGE, POSTS_PAGE } from '../routes.js'
 
@@ -38,7 +39,7 @@ export const deletePostComponent = (token) => {
                 )
 
                 if (messageForDeletePost) {
-                    await deletePosts({ token, postId })
+                    await deletePost({ token, postId })
                     console.log('Пост успешно удален')
                     return goToPage(POSTS_PAGE)
                 } else {
