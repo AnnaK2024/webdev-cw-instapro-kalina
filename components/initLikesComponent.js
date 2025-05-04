@@ -92,14 +92,16 @@ export const renderModalLikesList = (posts) => {
     }
 
     likeCountsElements.forEach((likeCountElement, index) => {
-        likeCountElement.addEventListener('click', () => {
+        likeCountElement.addEventListener('click', (event) => {
+            event.stopPropagation()
             const likesList = posts[index].likes
             renderLikesList(likesList)
             modalContainer.style.display = 'flex'
         })
     })
 
-    closeModalButton.addEventListener('click', () => {
+    closeModalButton.addEventListener('click', (event) => {
+        event.stopPropagation()
         modalContainer.style.display = 'none'
     })
 }
@@ -134,14 +136,16 @@ export const renderModalLikesListUser = (posts) => {
     }
 
     likeCountsElements.forEach((likeCountElement, index) => {
-        likeCountElement.addEventListener('click', () => {
+        likeCountElement.addEventListener('click', (event) => {
+            event.stopPropagation()
             const likesList = posts[index].likes
             renderLikesList(likesList)
             modalContainer.style.display = 'flex'
         })
     })
 
-    closeModalButton.addEventListener('click', () => {
+    closeModalButton.addEventListener('click', (event) => {
+        event.stopPropagation()
         modalContainer.style.display = 'none'
     })
 }

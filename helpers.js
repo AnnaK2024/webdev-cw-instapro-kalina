@@ -34,7 +34,8 @@ export const addImageClickListener = () => {
     const images = document.querySelectorAll('img') // Находим все изображения на странице
     images.forEach((img) => {
         img.style.cursor = 'pointer' // Устанавливаем курсор указателя
-        img.addEventListener('click', () => {
+        img.addEventListener('click', (event) => {
+            event.stopPropagation()
             window.open(img.src, '_blank') // Открываем изображение в новой вкладке
         })
     })
