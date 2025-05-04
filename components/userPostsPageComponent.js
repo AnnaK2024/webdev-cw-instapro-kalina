@@ -75,6 +75,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                     <p class="post-date">
                       ${result}
                     </p>
+                    
                   </li>`
         })
         .join('')
@@ -104,10 +105,13 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
 
     renderHeaderComponent({
         element: document.querySelector('.header-container'),
+        userName: authorPosts.name, // Добавляем имя пользователя
+        userImage: authorPosts.imageUrl, // Добавляем изображение пользователя
     })
 
     for (let userEl of document.querySelectorAll('.post-header')) {
-        userEl.addEventListener('click', () => {
+        userEl.addEventListener('click', (event) => {
+            event.stopPropagation()
             goToPage(USER_POSTS_PAGE, {
                 userId: userEl.dataset.userId,
             })

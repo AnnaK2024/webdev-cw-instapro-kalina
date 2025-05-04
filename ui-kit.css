@@ -69,7 +69,7 @@ p {
 }
 
 .button:hover {
-  background-color: #f2eeff;
+  background-color: #5ae2ca;
 }
 
 .button[disabled="true"],
@@ -84,12 +84,12 @@ p {
 }
 
 .secondary-button {
-  background-color: #7fdfe2;
+  background-color: #00985f30;
   color: #369496;
 }
 
 .secondary-button:hover {
-  background-color: #f2eeff;
+  background-color: #5ae2ca;
 }
 
 .secondary-button:active {

@@ -70,7 +70,8 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
         // Обработчик удаления изображения
         element
             .querySelector('.file-upload-remove-button')
-            ?.addEventListener('click', () => {
+            ?.addEventListener('click', (event) => {
+                event.stopPropagation()
                 imageUrl = '' // Сбрасываем URL изображения
                 onImageUrlChange(imageUrl) // Уведомляем об изменении URL изображения
                 render() // Перерисовываем компонент

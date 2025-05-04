@@ -62,9 +62,11 @@ export function renderPostsPageComponent({ appEl }) {
                       <span class="user-name">${clearingHtml(post.user.name)}</span>
                       ${clearingHtml(post.description)}
                     </p>
-                    <p class="post-date">
-                      ${result}
-                    </p>
+                      <div class="footerPost" <p class="post-date">
+                        ${result}
+                      </p>
+                      <button data-post-id="${post.id}" class="delete-button delete-post-button" >Удалить пост</button>
+                      </div>
                   </li>`
         })
         .join('')
@@ -89,7 +91,8 @@ export function renderPostsPageComponent({ appEl }) {
     })
 
     for (let userEl of document.querySelectorAll('.post-header')) {
-        userEl.addEventListener('click', () => {
+        userEl.addEventListener('click', (event) => {
+          event.stopPropagation()
             goToPage(USER_POSTS_PAGE, {
                 userId: userEl.dataset.userId,
             })
