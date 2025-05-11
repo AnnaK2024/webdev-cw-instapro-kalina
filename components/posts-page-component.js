@@ -3,8 +3,11 @@ import { renderHeaderComponent } from './header-component.js'
 import { posts, goToPage, getToken } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { addImageClickListener, clearingHtml } from '../helpers.js'
-import { initLikeComponent, renderModalLikesList } from './initLikesComponent.js'
+import { clearingHtml } from '../helpers.js'
+import {
+    initLikeComponent,
+    renderModalLikesList,
+} from './initLikesComponent.js'
 import { deletePostComponent } from './deletePostComponent.js'
 
 export function renderPostsPageComponent({ appEl }) {
@@ -65,7 +68,7 @@ export function renderPostsPageComponent({ appEl }) {
                       <div class="footerPost" <p class="post-date">
                         ${result}
                       </p>
-                      <button data-post-id="${post.id}" class="delete-button delete-post-button" >Удалить пост</button>
+                      <button data-post-id="${post.id}" class="delete-button delete-post-button">Удалить пост</button>
                       </div>
                   </li>`
         })
@@ -84,7 +87,6 @@ export function renderPostsPageComponent({ appEl }) {
     initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), POSTS_PAGE)
     renderModalLikesList(posts)
-    addImageClickListener()
 
     renderHeaderComponent({
         element: document.querySelector('.header-container'),
@@ -92,7 +94,7 @@ export function renderPostsPageComponent({ appEl }) {
 
     for (let userEl of document.querySelectorAll('.post-header')) {
         userEl.addEventListener('click', (event) => {
-          event.stopPropagation()
+            event.stopPropagation()
             goToPage(USER_POSTS_PAGE, {
                 userId: userEl.dataset.userId,
             })

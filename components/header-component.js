@@ -74,22 +74,30 @@ export function renderHeaderComponent({ element }) {
     )
     const dropdownContent = element.querySelector('.dropdown-content')
 
-    profileDropdownButton.addEventListener('click', () => {
-        dropdownContent.classList.toggle('show')
-    })
+    if (profileDropdownButton) {
+        profileDropdownButton.addEventListener('click', () => {
+            dropdownContent.classList.toggle('show')
+        })
+    }
 
     // Обработчик клика по кнопке "Выйти".
-    const logoutButton = dropdownContent.querySelector('.logout-button')
-    logoutButton.addEventListener('click', () => {
-        const confirmLogout = confirm('Вы действительно хотите выйти?')
-        if (confirmLogout) {
-            logout()
-        }
-    })
+    const logoutButton = dropdownContent
+        ? dropdownContent.querySelector('.logout-button')
+        : null
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            const confirmLogout = confirm('Вы действительно хотите выйти?')
+            if (confirmLogout) {
+                logout()
+            }
+        })
+    }
 
     // Закрытие выпадающего меню при клике вне его
     window.addEventListener('click', (event) => {
         if (
+            profileDropdownButton &&
+            dropdownContent &&
             !profileDropdownButton.contains(event.target) &&
             !dropdownContent.contains(event.target)
         ) {

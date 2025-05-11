@@ -3,7 +3,7 @@ import { renderHeaderComponent } from './header-component.js'
 import { getToken, goToPage, user } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { addImageClickListener, clearingHtml } from '../helpers.js'
+import { clearingHtml } from '../helpers.js'
 import {
     initLikeComponent,
     renderModalLikesListUser,
@@ -72,9 +72,11 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                       <span class="user-name">${clearingHtml(post.user.name)}</span>
                       ${clearingHtml(post.description)}
                     </p>
-                    <p class="post-date">
-                      ${result}
-                    </p>
+                    <div class="footerPost" <p class="post-date">
+                        ${result}
+                      </p>
+                      <button data-post-id="${post.id}" class="delete-button delete-post-button">Удалить пост</button>
+                    </div>
                     
                   </li>`
         })
@@ -99,7 +101,6 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
     initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), USER_POSTS_PAGE)
     renderModalLikesListUser(posts)
-    addImageClickListener()
 
     console.log('Актуальный список постов', posts)
 
@@ -108,7 +109,6 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
         userName: authorPosts.name, // Добавляем имя пользователя
         userImage: authorPosts.imageUrl, // Добавляем изображение пользователя
     })
-
 
     for (let userEl of document.querySelectorAll('.post-header')) {
         userEl.addEventListener('click', (event) => {

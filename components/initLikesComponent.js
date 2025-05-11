@@ -1,5 +1,5 @@
-
 import { addLikePost, removeLikePost } from '../api.js'
+import { delay } from '../helpers.js'
 import { goToPage } from '../index.js'
 import { AUTH_PAGE } from '../routes.js'
 
@@ -9,53 +9,60 @@ export const initLikeComponent = (
     token,
     posts,
 ) => {
-    const likesButtons = appEl.querySelectorAll('.like-button')
+    const likesButtons = appEl.querySelectorAll('.like-button');
 
     likesButtons.forEach((likeButton) => {
         likeButton.addEventListener('click', async (event) => {
-            event.stopPropagation()
-            event.preventDefault()
+            event.stopPropagation();
 
-            const postId = likeButton.dataset.postId
-            const isLiked = likeButton
-                .querySelector('img')
-                .src.includes('like-active.svg')
+            const postId = likeButton.dataset.postId;
+            const isLiked = likeButton.querySelector('img').src.includes('like-active.svg');
 
             if (!token) {
-                alert('Необходимо авторизоваться')
-                goToPage(AUTH_PAGE)
-                return
+                alert('Необходимо авторизоваться');
+                goToPage(AUTH_PAGE);
+                return;
             }
+
+            // Добавляем класс анимации только для авторизованных пользователей
+            likeButton.classList.add('-loading-like');
+
+            // Функция задержки
+            await delay(2000);
 
             try {
-                let updatePost
+                const updatePost = isLiked 
+                    ? await removeLikePost({ token, postId }) 
+                    : await addLikePost({ token, postId });
 
-                if (isLiked) {
-                    updatePost = await removeLikePost({ token, postId })
-                } else {
-                    updatePost = await addLikePost({
-                        token,
-                        postId,
-                    })
-                }
-
-                const postIndex = posts.findIndex(
-                    (post) => post.id === updatePost.post.id,
-                )
-                posts[postIndex] = updatePost.post
-
-                renderPostsPageComponent({ appEl, posts })
+                updatePostInPosts(updatePost.post, posts);
+                renderPostsPageComponent({ appEl, posts });
             } catch (error) {
-                console.log(error)
-
-                if (error.responce && error.response.status === 401) {
-                    alert('Сессия истекла. Пожалуйста, авторизуйтесь')
-                    goToPage(AUTH_PAGE)
-                }
+                handleError(error);
+            } finally {
+                likeButton.classList.remove('-loading-like');
             }
-        })
-    })
-}
+        });
+    });
+};
+
+const updatePostInPosts = (updatedPost, posts) => {
+    const postIndex = posts.findIndex((post) => post.id === updatedPost.id);
+    if (postIndex !== -1) {
+        posts[postIndex] = updatedPost;
+    }
+};
+
+const handleError = (error) => {
+    console.error(error);
+    if (error.response && error.response.status === 401) {
+        alert('Сессия истекла. Пожалуйста, авторизуйтесь');
+        goToPage(AUTH_PAGE);
+    } else {
+        alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
+    }
+};
+
 
 export const renderModalLikesList = (posts) => {
     const likeCountsElements = document.querySelectorAll('.post-likes-count')
