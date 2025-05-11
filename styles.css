@@ -35,8 +35,19 @@
 }
 
 .logout-button {
-    width: 130px;
-    text-align: right;
+    margin-bottom: 10px;
+    width: 100px;
+    border: none;
+    text-align: center;
+    background-color: transparent;
+    transition:
+        font-size 0.3s ease,
+        color 0.3s ease; /* Плавный переход */
+}
+.logout-button:hover {
+    background-color: #d8f3ef;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .posts {
@@ -103,7 +114,9 @@
     cursor: pointer;
     font-weight: bold;
     color: #8a8a8a;
-    transition: font-size 0.3s ease, color 0.3s ease; /* Плавный переход */
+    transition:
+        font-size 0.3s ease,
+        color 0.3s ease; /* Плавный переход */
 }
 .delete-post-button:hover {
     font-size: 16px;
@@ -272,17 +285,22 @@ input[type='text'] {
 
 .dropdown-content.show {
     display: block;
+    background-color: #d8f3ef;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.dropdown-content a,
-.dropdown-content button {
+.dropdown-content a {
     color: black;
     padding: 12px 16px;
-    text-decoration: none;
     display: block;
+    transition:
+        font-size 0.3s ease,
+        color 0.3s ease; /* Плавный переход */
 }
 
-.dropdown-content a:hover,
-.dropdown-content button:hover {
-    background-color: #f1f1f1;
+.dropdown-content a:hover {
+    font-size: 16px;
+    font-weight: bold;
 }

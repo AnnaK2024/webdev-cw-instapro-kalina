@@ -35,7 +35,7 @@ export function renderHeaderComponent({ element }) {
                       <span>${user.name}</span> ➤
                   </button>
                   <div class="dropdown-content">
-                      <a href="${PROFILE_PAGE}" class="profile-link">Профиль</a>
+                      <a href="${PROFILE_PAGE}" class="profile-link">Профиль пользователя</a>
                       <button class="logout-button">Выйти</button>
                   </div>
               </div>
@@ -68,17 +68,27 @@ export function renderHeaderComponent({ element }) {
         goToPage(POSTS_PAGE)
     })
 
-    // Обработчик клика по кнопке профиля.
-    const profileDropdownButton = element.querySelector(
-        '.profile-dropdown-button',
-    )
-    const dropdownContent = element.querySelector('.dropdown-content')
+   // Обработчик наведения курсора на кнопку профиля.
+const profileDropdownButton = element.querySelector('.profile-dropdown-button');
+const dropdownContent = element.querySelector('.dropdown-content');
 
-    if (profileDropdownButton) {
-        profileDropdownButton.addEventListener('click', () => {
-            dropdownContent.classList.toggle('show')
-        })
-    }
+if (profileDropdownButton) {
+    profileDropdownButton.addEventListener('mouseenter', () => {
+        dropdownContent.classList.add('show');
+    });
+
+    profileDropdownButton.addEventListener('mouseleave', () => {
+        dropdownContent.classList.remove('show');
+    });
+
+    dropdownContent.addEventListener('mouseenter', () => {
+        dropdownContent.classList.add('show');
+    });
+
+    dropdownContent.addEventListener('mouseleave', () => {
+        dropdownContent.classList.remove('show');
+    });
+}
 
     // Обработчик клика по кнопке "Выйти".
     const logoutButton = dropdownContent

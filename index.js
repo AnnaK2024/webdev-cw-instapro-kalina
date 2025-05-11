@@ -93,10 +93,8 @@ export const goToPage = (newPage, data) => {
                 })
         }
 
-        if (window.location.pathname === PROFILE_PAGE) {
-            const profilePage = renderProfilePage()
-            document.body.innerHTML = '' // Очистите текущее содержимое
-            document.body.appendChild(profilePage) // Добавьте новый контент
+        if (newPage === PROFILE_PAGE) {
+
         }
 
         page = newPage
