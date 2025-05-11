@@ -1,5 +1,10 @@
 import { goToPage, logout, user } from '../index.js'
-import { ADD_POSTS_PAGE, AUTH_PAGE, POSTS_PAGE } from '../routes.js'
+import {
+    ADD_POSTS_PAGE,
+    AUTH_PAGE,
+    POSTS_PAGE,
+    PROFILE_PAGE,
+} from '../routes.js'
 
 /**
  * Компонент заголовка страницы.
@@ -24,7 +29,17 @@ export function renderHeaderComponent({ element }) {
       </button>
       ${
           user
-              ? `<button title="${user.name}" class="header-button logout-button">Выйти</button>`
+              ? `
+              <div class="user-menu">
+                  <button class="header-button profile-dropdown-button" title="${user.name}">
+                      <span>${user.name}</span> ➤
+                  </button>
+                  <div class="dropdown-content">
+                      <a href="${PROFILE_PAGE}" class="profile-link">Профиль</a>
+                      <button class="logout-button">Выйти</button>
+                  </div>
+              </div>
+              `
               : ''
       }  
   </div>
@@ -53,11 +68,34 @@ export function renderHeaderComponent({ element }) {
         goToPage(POSTS_PAGE)
     })
 
-    /**
-     * Обработчик клика по кнопке "Выйти".
-     * Если кнопка существует (т.е. пользователь авторизован), вызывает функцию `logout`.
-     */
-    element.querySelector('.logout-button')?.addEventListener('click', logout)
+    // Обработчик клика по кнопке профиля.
+    const profileDropdownButton = element.querySelector(
+        '.profile-dropdown-button',
+    )
+    const dropdownContent = element.querySelector('.dropdown-content')
+
+    profileDropdownButton.addEventListener('click', () => {
+        dropdownContent.classList.toggle('show')
+    })
+
+    // Обработчик клика по кнопке "Выйти".
+    const logoutButton = dropdownContent.querySelector('.logout-button')
+    logoutButton.addEventListener('click', () => {
+        const confirmLogout = confirm('Вы действительно хотите выйти?')
+        if (confirmLogout) {
+            logout()
+        }
+    })
+
+    // Закрытие выпадающего меню при клике вне его
+    window.addEventListener('click', (event) => {
+        if (
+            !profileDropdownButton.contains(event.target) &&
+            !dropdownContent.contains(event.target)
+        ) {
+            dropdownContent.classList.remove('show')
+        }
+    })
 
     return element
 }

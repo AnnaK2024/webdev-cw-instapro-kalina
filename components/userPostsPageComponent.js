@@ -47,7 +47,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                         <div class="post-header__user-data">
                             <img src="${post.user.imageUrl}" class="post-header__user-image">
                             <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
-                            <button class="view-profile-button" data-user-id="${post.user.id}">Профиль</button>
+                            
                         </div>
                     </div>
                     <div class="post-image-container">
@@ -109,13 +109,6 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
         userImage: authorPosts.imageUrl, // Добавляем изображение пользователя
     })
 
-    for (let userEl of document.querySelectorAll('.view-profile-button')) {
-        userEl.addEventListener('click', (event) => {
-            event.stopPropagation()
-            const userId = userEl.dataset.userId
-            goToPage(USER_POSTS_PAGE, { userId })
-        })
-    }
 
     for (let userEl of document.querySelectorAll('.post-header')) {
         userEl.addEventListener('click', (event) => {

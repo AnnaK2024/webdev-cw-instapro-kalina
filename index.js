@@ -6,6 +6,7 @@ import {
     AUTH_PAGE,
     LOADING_PAGE,
     POSTS_PAGE,
+    PROFILE_PAGE,
     USER_POSTS_PAGE,
 } from './routes.js'
 import { renderPostsPageComponent } from './components/posts-page-component.js'
@@ -43,6 +44,7 @@ export const goToPage = (newPage, data) => {
             ADD_POSTS_PAGE,
             USER_POSTS_PAGE,
             LOADING_PAGE,
+            PROFILE_PAGE
         ].includes(newPage)
     ) {
         if (newPage === ADD_POSTS_PAGE) {
