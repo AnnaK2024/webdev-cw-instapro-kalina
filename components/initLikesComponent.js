@@ -14,6 +14,7 @@ export const initLikeComponent = (
     likesButtons.forEach((likeButton) => {
         likeButton.addEventListener('click', async (event) => {
             event.stopPropagation()
+            event.preventDefault()
 
             const postId = likeButton.dataset.postId
             const isLiked = likeButton
