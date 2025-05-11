@@ -77,10 +77,15 @@
 .post-image-container {
     margin-left: -20px;
     margin-right: -20px;
-    height: 500px;
     display: flex;
     justify-content: center;
     background-color: #d8f3ef;
+    border: 5px solid #fff; /* Цвет рамки */
+}
+.post-image-container::after {
+    background: rgba(0, 0, 0, 0.5); /* Затемнение */
+    border-radius: 10px; /* Радиус рамки */
+    pointer-events: none; /* Чтобы не мешать взаимодействию с изображением */
 }
 
 .post-image {
