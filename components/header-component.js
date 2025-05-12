@@ -1,10 +1,10 @@
-import { goToPage, logout, user } from '../index.js'
+import { goToPage, logout, user } from '../index.js';
 import {
     ADD_POSTS_PAGE,
     AUTH_PAGE,
     POSTS_PAGE,
-    PROFILE_PAGE,
-} from '../routes.js'
+} from '../routes.js';
+import { greet } from './userProfileComponent.js';
 
 /**
  * Компонент заголовка страницы.
@@ -14,106 +14,75 @@ import {
  * @returns {HTMLElement} Возвращает элемент заголовка после рендеринга.
  */
 export function renderHeaderComponent({ element }) {
-    /**
-     * Рендерит содержимое заголовка.
-     */
     element.innerHTML = `
-  <div class="page-header">
-      <h1 class="logo">instapro</h1>
-      <button class="header-button add-or-login-button">
-      ${
-          user
-              ? `<div title="Добавить пост" class="add-post-sign"></div>`
-              : 'Войти'
-      }
-      </button>
-      ${
-          user
-              ? `
-              <div class="user-menu">
-                  <button class="header-button profile-dropdown-button" title="${user.name}">
-                      <span>${user.name}</span> ➤
-                  </button>
-                  <div class="dropdown-content">
-                      <a href="${PROFILE_PAGE}" class="profile-link">Профиль пользователя</a>
-                      <button class="logout-button">Выйти</button>
-                  </div>
-              </div>
-              `
-              : ''
-      }  
-  </div>
-  `
+        <div class="page-header">
+            <h1 class="logo">instapro</h1>
+            <button class="header-button add-or-login-button">
+                ${user ? `<div title="Добавить пост" class="add-post-sign"></div>` : 'Войти'}
+            </button>
+            ${user ? `
+                <div class="user-menu">
+                    <button class="header-button profile-dropdown-button" title="${user.name}">
+                        <span>${user.name}</span> ➤
+                    </button>
+                    <div class="dropdown-content">
+                        <button class="profile-button">Профиль пользователя</a>
+                        <button class="logout-button">Выйти</button>
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
 
-    /**
-     * Обработчик клика по кнопке "Добавить пост"/"Войти".
-     * Если пользователь авторизован, перенаправляет на страницу добавления постов.
-     * Если пользователь не авторизован, перенаправляет на страницу авторизации.
-     */
-    element
-        .querySelector('.add-or-login-button')
-        .addEventListener('click', () => {
-            if (user) {
-                goToPage(ADD_POSTS_PAGE)
-            } else {
-                goToPage(AUTH_PAGE)
-            }
-        })
+    const addOrLoginButton = element.querySelector('.add-or-login-button');
+    const logo = element.querySelector('.logo');
+    const profileDropdownButton = element.querySelector('.profile-dropdown-button');
+    const dropdownContent = element.querySelector('.dropdown-content');
+    const logoutButton = dropdownContent?.querySelector('.logout-button');
+    const userProfileButton = document.getElementById('.profile-button');
 
-    /**
-     * Обработчик клика по логотипу.
-     * Перенаправляет на страницу с постами.
-     */
-    element.querySelector('.logo').addEventListener('click', () => {
-        goToPage(POSTS_PAGE)
-    })
-
-   // Обработчик наведения курсора на кнопку профиля.
-const profileDropdownButton = element.querySelector('.profile-dropdown-button');
-const dropdownContent = element.querySelector('.dropdown-content');
-
-if (profileDropdownButton) {
-    profileDropdownButton.addEventListener('mouseenter', () => {
-        dropdownContent.classList.add('show');
+    addOrLoginButton.addEventListener('click', () => {
+        goToPage(user ? ADD_POSTS_PAGE : AUTH_PAGE);
     });
 
-    profileDropdownButton.addEventListener('mouseleave', () => {
-        dropdownContent.classList.remove('show');
+    logo.addEventListener('click', () => {
+        goToPage(POSTS_PAGE);
     });
 
-    dropdownContent.addEventListener('mouseenter', () => {
-        dropdownContent.classList.add('show');
-    });
+    if (profileDropdownButton) {
+        profileDropdownButton.addEventListener('mouseenter', () => {
+            dropdownContent.classList.add('show');
+        });
 
-    dropdownContent.addEventListener('mouseleave', () => {
-        dropdownContent.classList.remove('show');
-    });
-}
+        profileDropdownButton.addEventListener('mouseleave', () => {
+            dropdownContent.classList.remove('show');
+        });
 
-    // Обработчик клика по кнопке "Выйти".
-    const logoutButton = dropdownContent
-        ? dropdownContent.querySelector('.logout-button')
-        : null
-    if (logoutButton) {
-        logoutButton.addEventListener('click', () => {
-            const confirmLogout = confirm('Вы действительно хотите выйти?')
-            if (confirmLogout) {
-                logout()
-            }
-        })
+        dropdownContent.addEventListener('mouseenter', () => {
+            dropdownContent.classList.add('show');
+        });
+
+        dropdownContent.addEventListener('mouseleave', () => {
+            dropdownContent.classList.remove('show');
+        });
     }
 
-    // Закрытие выпадающего меню при клике вне его
-    window.addEventListener('click', (event) => {
-        if (
-            profileDropdownButton &&
-            dropdownContent &&
-            !profileDropdownButton.contains(event.target) &&
-            !dropdownContent.contains(event.target)
-        ) {
-            dropdownContent.classList.remove('show')
-        }
-    })
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            if (confirm('Вы действительно хотите выйти?')) {
+                logout();
+            }
+        });
+    }
 
-    return element
+    if (userProfileButton) {
+        userProfileButton.addEventListener('click', (event) => {
+            console.log(click)
+            event.preventDefault();
+            greet()
+            
+        });
+    }
+
+    return element;
 }

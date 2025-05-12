@@ -6,7 +6,6 @@ import {
     AUTH_PAGE,
     LOADING_PAGE,
     POSTS_PAGE,
-    PROFILE_PAGE,
     USER_POSTS_PAGE,
 } from './routes.js'
 import { renderPostsPageComponent } from './components/posts-page-component.js'
@@ -17,7 +16,6 @@ import {
     saveUserToLocalStorage,
 } from './helpers.js'
 import { renderUserPostsPageComponent } from './components/userPostsPageComponent.js'
-import { renderProfilePage } from './components/userProfileComponent.js'
 
 export let user = getUserFromLocalStorage()
 export let page = null
@@ -45,7 +43,6 @@ export const goToPage = (newPage, data) => {
             ADD_POSTS_PAGE,
             USER_POSTS_PAGE,
             LOADING_PAGE,
-            PROFILE_PAGE,
         ].includes(newPage)
     ) {
         if (newPage === ADD_POSTS_PAGE) {
@@ -91,10 +88,6 @@ export const goToPage = (newPage, data) => {
                     console.error(error)
                     goToPage(POSTS_PAGE)
                 })
-        }
-
-        if (newPage === PROFILE_PAGE) {
-
         }
 
         page = newPage
@@ -156,9 +149,6 @@ const renderApp = () => {
         return renderUserPostsPageComponent({ appEl, posts })
     }
 
-    if (page === PROFILE_PAGE) {
-        return renderProfilePage({ appEl, user })
-    }
 }
 
 goToPage(POSTS_PAGE)
