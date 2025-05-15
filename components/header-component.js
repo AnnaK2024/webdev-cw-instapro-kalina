@@ -1,10 +1,6 @@
-import { goToPage, logout, user } from '../index.js';
-import {
-    ADD_POSTS_PAGE,
-    AUTH_PAGE,
-    POSTS_PAGE,
-} from '../routes.js';
-import { greet } from './userProfileComponent.js';
+import { goToPage, logout, user } from '../index.js'
+import { ADD_POSTS_PAGE, AUTH_PAGE, POSTS_PAGE } from '../routes.js'
+import { renderUserProfile } from './userProfileComponent.js'
 
 /**
  * Компонент заголовка страницы.
@@ -20,7 +16,9 @@ export function renderHeaderComponent({ element }) {
             <button class="header-button add-or-login-button">
                 ${user ? `<div title="Добавить пост" class="add-post-sign"></div>` : 'Войти'}
             </button>
-            ${user ? `
+            ${
+                user
+                    ? `
                 <div class="user-menu">
                     <button class="header-button profile-dropdown-button" title="${user.name}">
                         <span>${user.name}</span> ➤
@@ -30,59 +28,61 @@ export function renderHeaderComponent({ element }) {
                         <button class="logout-button">Выйти</button>
                     </div>
                 </div>
-            ` : ''}
+            `
+                    : ''
+            }
         </div>
-    `;
+    `
 
-    const addOrLoginButton = element.querySelector('.add-or-login-button');
-    const logo = element.querySelector('.logo');
-    const profileDropdownButton = element.querySelector('.profile-dropdown-button');
-    const dropdownContent = element.querySelector('.dropdown-content');
-    const logoutButton = dropdownContent?.querySelector('.logout-button');
-    const userProfileButton = document.getElementById('.profile-button');
+    const addOrLoginButton = element.querySelector('.add-or-login-button')
+    const logo = element.querySelector('.logo')
+    const profileDropdownButton = element.querySelector(
+        '.profile-dropdown-button',
+    )
+    const dropdownContent = element.querySelector('.dropdown-content')
+    const logoutButton = dropdownContent?.querySelector('.logout-button')
+    const userProfileButton = element.querySelector('.profile-button')
 
     addOrLoginButton.addEventListener('click', () => {
-        goToPage(user ? ADD_POSTS_PAGE : AUTH_PAGE);
-    });
+        goToPage(user ? ADD_POSTS_PAGE : AUTH_PAGE)
+    })
 
     logo.addEventListener('click', () => {
-        goToPage(POSTS_PAGE);
-    });
+        goToPage(POSTS_PAGE)
+    })
 
     if (profileDropdownButton) {
         profileDropdownButton.addEventListener('mouseenter', () => {
-            dropdownContent.classList.add('show');
-        });
+            dropdownContent.classList.add('show')
+        })
 
         profileDropdownButton.addEventListener('mouseleave', () => {
-            dropdownContent.classList.remove('show');
-        });
+            dropdownContent.classList.remove('show')
+        })
 
         dropdownContent.addEventListener('mouseenter', () => {
-            dropdownContent.classList.add('show');
-        });
+            dropdownContent.classList.add('show')
+        })
 
         dropdownContent.addEventListener('mouseleave', () => {
-            dropdownContent.classList.remove('show');
-        });
+            dropdownContent.classList.remove('show')
+        })
     }
 
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             if (confirm('Вы действительно хотите выйти?')) {
-                logout();
+                logout()
             }
-        });
+        })
     }
 
     if (userProfileButton) {
         userProfileButton.addEventListener('click', (event) => {
-            console.log(click)
-            event.preventDefault();
-            greet()
-            
-        });
+            event.preventDefault()
+            renderUserProfile(element)
+        })
     }
 
-    return element;
+    return element
 }
