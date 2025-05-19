@@ -68,8 +68,8 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                         <div class="post-modal-list"></div>
                       </div>
                     </div>
-                    <span class="user-name">${clearingHtml(post.user.name)}:</span>
-                    <p class="post-text" data-post-index="${index}">
+                    <span class="user-name">${clearingHtml(post.user.name)}</span>
+                    <p class="post-text">
                       ${clearingHtml(post.description)}
                     </p>
                     <div class="footerPost" <p class="post-date">
