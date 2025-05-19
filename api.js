@@ -1,5 +1,5 @@
 const personalKey = 'kalina'
-const baseHost = ' https://wedev-api.sky.pro'
+const baseHost = 'https://wedev-api.sky.pro'
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
 
 export function getPosts({ token }) {
@@ -149,4 +149,7 @@ export function removeLikePost({ token, postId }) {
         return response.json()
     })
 }
+
+
+
 

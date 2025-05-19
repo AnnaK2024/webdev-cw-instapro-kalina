@@ -67,6 +67,9 @@ p {
   color: #369496;
   cursor: pointer;
 }
+.link-button:hover{
+  text-decoration: underline;
+}
 
 .button:hover {
   background-color: #5ae2ca;
@@ -74,7 +77,7 @@ p {
 
 .button[disabled="true"],
 .secondary-button[disabled="true"] {
-  background-color: #f4f5f6;
+  background-color: #7fdfe2;
   color: rgba(153, 153, 153, 0.6);
   pointer-events: none;
 }
@@ -84,8 +87,8 @@ p {
 }
 
 .secondary-button {
-  background-color: #00985f30;
-  color: #369496;
+  background-color: #369496;
+  color: #fff;
 }
 
 .secondary-button:hover {

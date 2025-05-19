@@ -95,7 +95,7 @@ export function renderAuthPageComponent({ appEl, setUser }) {
                     ${!isLoginMode ? `<input type="text" id="name-input" class="input" placeholder="Имя" />` : ''}
                     <input type="text" id="login-input" class="input" placeholder="Логин" />
                     <div class="password-container">
-                        <input type="password" id="password" placeholder="Введите пароль" />
+                        <input type="password" id="password" class="input" placeholder="Введите пароль" />
                         <svg id="toggleIcon" class="toggle-visibility" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="3" stroke="gray" stroke-width="2"/>
                             <path d="M2 12C4 8 8 4 12 4C16 4 20 8 22 12C20 16 16 20 12 20C8 20 4 16 2 12Z" stroke="gray" stroke-width="2"/>
@@ -107,7 +107,7 @@ export function renderAuthPageComponent({ appEl, setUser }) {
                 <div class="form-footer">
                     <p class="form-footer-title">
                         ${isLoginMode ? 'Нет аккаунта?' : 'Уже есть аккаунт?'}
-                        <button class="link-button" id="toggle-button">${isLoginMode ? 'Зарегистрироваться.' : 'Войти.'}</button>
+                        <button class="link-button" id="toggle-button">${isLoginMode ? 'Зарегистрироваться' : 'Войти'}</button>
                     </p>
                 </div>
             </div>

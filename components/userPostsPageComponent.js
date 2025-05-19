@@ -37,7 +37,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
             } else if (post.likes.length === 1) {
                 likeCountText = `${clearingHtml(post.likes[0].name)}`
             } else if (post.likes.length === 2) {
-                likeCountText = `${clearingHtml(post.likes[0].name)} и еще 1`
+                likeCountText = `${clearingHtml(post.likes[0].name)}`
             } else {
                 likeCountText = `${post.likes.length}`
             }
@@ -68,8 +68,8 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                         <div class="post-modal-list"></div>
                       </div>
                     </div>
-                    <p class="post-text">
-                      <span class="user-name">${clearingHtml(post.user.name)}</span>
+                    <span class="user-name">${clearingHtml(post.user.name)}:</span>
+                    <p class="post-text" data-post-index="${index}">
                       ${clearingHtml(post.description)}
                     </p>
                     <div class="footerPost" <p class="post-date">

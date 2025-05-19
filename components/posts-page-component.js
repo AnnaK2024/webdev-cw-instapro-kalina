@@ -31,7 +31,7 @@ export function renderPostsPageComponent({ appEl }) {
             } else if (post.likes.length === 1) {
                 likeCountText = `${clearingHtml(post.likes[0].name)}`
             } else if (post.likes.length === 2) {
-                likeCountText = `${clearingHtml(post.likes[0].name)} и еще 1`
+                likeCountText = `${clearingHtml(post.likes[0].name)}`
             } else {
                 likeCountText = `${post.likes.length}`
             }
