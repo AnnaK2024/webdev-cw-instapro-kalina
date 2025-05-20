@@ -63,97 +63,63 @@ const handleError = (error) => {
     }
 };
 
+export const renderModalLikesList = (posts, isUserLikes = false) => {
+    const likeCountsElements = document.querySelectorAll('.post-likes-count');
+    const modalContainer = document.querySelector('.post-modal-container');
+    const likesListElement = document.querySelector('.post-modal-list');
+    const closeModalButton = document.querySelector('.button-close-modal');
 
-export const renderModalLikesList = (posts) => {
-    const likeCountsElements = document.querySelectorAll('.post-likes-count')
-    const modalContainer = document.querySelector('.post-modal-container')
-    const likesListElement = document.querySelector('.post-modal-list')
-    const closeModalButton = document.querySelector('.button-close-modal')
+    // Общая функция для рендера списка лайкнувших
+    const renderLikesList = (likesList) => {
+        likesListElement.innerHTML = '';
 
-    function renderLikesList(likesList) {
-        likesListElement.innerHTML = ''
-        likesList.forEach((likes) => {
-            const userIdFromLikes = likes.id
-            console.log('userIdFromLikes:', userIdFromLikes)
-            const userNameFromLikes = likes.name
+        const userItems = likesList
+            .map((likes) => {
+                // В зависимости от типа данных выбираем свойства
+                const userId = isUserLikes ? likes._id : likes.id;
+                const userName = likes.name;
+                const userImageUrl = isUserLikes ? likes.imageUrl : null;
 
-            const userPost = posts.find(
-                (post) => post.user.id === userIdFromLikes,
-            )
+                // Находим пост пользователя, если нужно
+                const userPost = posts.find(
+                    (post) => post.user.id === userId
+                );
 
-            if (userPost) {
-                const userItem = document.createElement('div')
-                userItem.classList.add('user-item')
+                if (!userPost && !userImageUrl) return null; // пропускаем, если данных нет
 
-                const userImage = document.createElement('img')
-                userImage.src = userPost.user.imageUrl
-                userImage.classList.add('post-header__user-image')
+                const userItem = document.createElement('div');
+                userItem.classList.add('user-item');
 
-                const userName = document.createElement('p')
-                userName.textContent = userNameFromLikes
+                const userImage = document.createElement('img');
+                userImage.src = userImageUrl || userPost.user.imageUrl;
+                userImage.classList.add('post-header__user-image');
 
-                userItem.appendChild(userImage)
-                userItem.appendChild(userName)
-                likesListElement.appendChild(userItem)
-            }
-        })
-    }
+                const userNameEl = document.createElement('p');
+                userNameEl.textContent = userName;
 
+                userItem.appendChild(userImage);
+                userItem.appendChild(userNameEl);
+
+                return userItem;
+            })
+            .filter(item => item !== null);
+
+        likesListElement.append(...userItems);
+    };
+
+    // Обработчик клика по лайкам
     likeCountsElements.forEach((likeCountElement, index) => {
         likeCountElement.addEventListener('click', (event) => {
-            event.stopPropagation()
-            const likesList = posts[index].likes
-            renderLikesList(likesList)
-            modalContainer.style.display = 'flex'
-        })
-    })
+            event.stopPropagation();
+            const likesList = posts[index].likes;
+            renderLikesList(likesList);
+            modalContainer.style.display = 'flex';
+        });
+    });
 
+    // Обработчик закрытия модалки
     closeModalButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        modalContainer.style.display = 'none'
-    })
-}
-
-export const renderModalLikesListUser = (posts) => {
-    const likeCountsElements = document.querySelectorAll('.post-likes-count')
-    const modalContainer = document.querySelector('.post-modal-container')
-    const likesListElement = document.querySelector('.post-modal-list')
-    const closeModalButton = document.querySelector('.button-close-modal')
-
-    function renderLikesList(likesList) {
-        likesListElement.innerHTML = ''
-        likesList.forEach((like) => {
-            const userIdFromLikes = like._id
-            console.log('userIdFromLikes:', userIdFromLikes)
-            const userNameFromLikes = like.name
-
-            const userItem = document.createElement('div')
-            userItem.classList.add('user-item')
-
-            const userImage = document.createElement('img')
-            userImage.src = like.imageUrl
-            userImage.classList.add('post-header__user-image')
-
-            const userName = document.createElement('p')
-            userName.textContent = userNameFromLikes
-
-            userItem.appendChild(userImage)
-            userItem.appendChild(userName)
-            likesListElement.appendChild(userItem)
-        })
-    }
-
-    likeCountsElements.forEach((likeCountElement, index) => {
-        likeCountElement.addEventListener('click', (event) => {
-            event.stopPropagation()
-            const likesList = posts[index].likes
-            renderLikesList(likesList)
-            modalContainer.style.display = 'flex'
-        })
-    })
-
-    closeModalButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        modalContainer.style.display = 'none'
-    })
-}
+        event.stopPropagation();
+        modalContainer.style.display = 'none';
+    });
+};

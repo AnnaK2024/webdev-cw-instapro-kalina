@@ -6,7 +6,7 @@ import { ru } from 'date-fns/locale'
 import { clearingHtml } from '../helpers.js'
 import {
     initLikeComponent,
-    renderModalLikesListUser,
+    renderModalLikesList,
 } from './initLikesComponent.js'
 import { deletePostComponent } from './deletePostComponent.js'
 
@@ -47,8 +47,8 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                         <div class="post-header__user-data">
                             <img src="${post.user.imageUrl}" class="post-header__user-image">
                             <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
-                            
                         </div>
+                        <button>Профиль</button>
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src="${post.imageUrl}">
@@ -100,7 +100,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
 
     initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), USER_POSTS_PAGE)
-    renderModalLikesListUser(posts)
+    renderModalLikesList(posts, true)
 
     console.log('Актуальный список постов', posts)
 

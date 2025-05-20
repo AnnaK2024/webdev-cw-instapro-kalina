@@ -41,7 +41,7 @@ export function renderPostsPageComponent({ appEl }) {
                             <img src="${post.user.imageUrl}" class="post-header__user-image">
                             <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
                         </div>
-
+                        <button data-post-id="${post.id}">Профиль</button>
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src="${post.imageUrl}">
