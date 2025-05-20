@@ -41,10 +41,9 @@ export function renderPostsPageComponent({ appEl }) {
                             <img src="${post.user.imageUrl}" class="post-header__user-image">
                             <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
                         </div>
-                        <button data-post-id="${post.id}">Профиль</button>
                     </div>
                     <div class="post-image-container">
-                      <img class="post-image" src="${post.imageUrl}">
+                      <img class="post-image" src="${post.imageUrl}" id="zoomable-image">
                     </div>
                     <div class="post-likes">
                       <button data-post-id="${post.id}" class="like-button">
@@ -87,6 +86,12 @@ export function renderPostsPageComponent({ appEl }) {
     initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), POSTS_PAGE)
     renderModalLikesList(posts)
+
+    const image = document.getElementById('zoomable-image')
+
+    image.addEventListener('click', () => {
+        image.classList.toggle('zoomed')
+    })
 
     renderHeaderComponent({
         element: document.querySelector('.header-container'),
