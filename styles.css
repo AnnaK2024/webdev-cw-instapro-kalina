@@ -91,15 +91,16 @@
     cursor: pointer; /* чтобы показать, что изображение кликабельно */
 }
 .post-image.zoomed {
-  transform: scale(1.2); /* увеличиваем изображение на 10% */
-  z-index: 20; /* чтобы изображение было поверх других элементов */
-  position: relative;
+    transform: scale(1.2); /* увеличиваем изображение на 10% */
+    z-index: 20; /* чтобы изображение было поверх других элементов */
+    position: relative;
 }
 
 .post-likes {
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
 }
 
 .like-button {
@@ -296,7 +297,7 @@ input[type='text'] {
     flex-direction: column;
     align-items: center;
 }
-.profile-button{
+.profile-button {
     margin-bottom: 10px;
     width: 100px;
     border: none;
@@ -310,4 +311,41 @@ input[type='text'] {
     background-color: #d8f3ef;
     font-size: 16px;
     font-weight: bold;
+}
+.post-modal-container {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    background: #fff;
+    border-radius: 10px;
+    z-index: 0;
+}
+.post-modal-container::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #d8f3ef, #7fdfe2);
+    z-index: -1;
+    filter: blur(4px);
+}
+.post-modal-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-bottom: 10px;
+}
+.button-close-modal {
+    font-size: 30px;
+    cursor: pointer;
+}
+.post-modal-list {
+    display: flex;
 }

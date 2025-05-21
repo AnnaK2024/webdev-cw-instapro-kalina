@@ -43,41 +43,41 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
             }
 
             return `<li class="post" data-post-index="${index}"> 
-                    <div class="post-header" data-user-id="${post.user.id}">
-                        <div class="post-header__user-data">
-                            <img src="${post.user.imageUrl}" class="post-header__user-image">
-                            <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
-                        </div>
+                <div class="post-header" data-user-id="${post.user.id}">
+                    <div class="post-header__user-data">
+                        <img src="${post.user.imageUrl}" class="post-header__user-image">
+                        <p class="post-header__user-name">${clearingHtml(post.user.name)}</p>
                     </div>
-                    <div class="post-image-container">
-                      <img class="post-image" src="${post.imageUrl}" id="zoomable-image">
+                </div>
+                <div class="post-image-container">
+                    <img class="post-image" src="${post.imageUrl}" id="zoomable-image">
+                </div>
+                <div class="post-modal-container" style="display: none">
+                    <div class="post-modal-content">
+                        <p class="post-modal-header">Пользователи, которым понравился пост</p>
+                        <span class="button-close-modal">&times;</span>
                     </div>
-                    <div class="post-likes">
-                      <button data-post-id="${post.id}" class="like-button">
-                      ${likeButtonImg}
-                      </button>
-                      <p class="post-likes-text">
+                    <div class="post-modal-list"></div>
+                </div>
+                <div class="post-likes">
+                    <button data-post-id="${post.id}" class="like-button">
+                        ${likeButtonImg}
+                    </button>
+                    <p class="post-likes-text">
                         Нравится: <strong class="post-likes-count">${likeCountText}</strong>
-                      </p>
-                      <div class="post-modal-container" style="display: none">
-                        <div class="post-modal-content">
-                            <p class="post-modal-header">Пользователи, которым понравился пост</p>
-                            <span class="button-close-modal">&times;</span>
-                        </div>
-                        <div class="post-modal-list"></div>
-                      </div>
-                    </div>
-                    <span class="user-name">${clearingHtml(post.user.name)}</span>
-                    <p class="post-text">
-                      ${clearingHtml(post.description)}
                     </p>
-                    <div class="footerPost" <p class="post-date">
+                </div>
+                <span class="user-name">${clearingHtml(post.user.name)}</span>
+                <p class="post-text">
+                    ${clearingHtml(post.description)}
+                </p>
+                <div class="footerPost">
+                    <p class="post-date">
                         ${result}
-                      </p>
-                      <button data-post-id="${post.id}" class="delete-button delete-post-button">Удалить пост</button>
-                    </div>
-                    
-                  </li>`
+                    </p>
+                    <button data-post-id="${post.id}" class="delete-button delete-post-button">Удалить пост</button>
+                </div>
+            </li>`
         })
         .join('')
 
@@ -96,6 +96,38 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
 
     console.log(user)
     appEl.innerHTML = appHtml
+
+    const likeButtons = document.querySelectorAll('.like-button')
+    likeButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const postId = button.dataset.postId
+            const modalContainer = button
+                .closest('.post')
+                .querySelector('.post-modal-container')
+
+            // Переключаем отображение модального окна
+            modalContainer.style.display =
+                modalContainer.style.display === 'none' ? 'block' : 'none'
+
+            // Заполняем модальное окно списком лайков
+            const likesList = modalContainer.querySelector('.post-modal-list')
+            likesList.innerHTML = '' // Очищаем предыдущий контент
+
+            // Предполагая, что `post.likes` доступен здесь
+            const postLikes = posts.find((post) => post.id === postId).likes
+            postLikes.forEach((like) => {
+                likesList.innerHTML += `<p>${clearingHtml(like.name)}</p>`
+            })
+        })
+    })
+
+    const closeModalButtons = document.querySelectorAll('.button-close-modal')
+    closeModalButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const modalContainer = button.closest('.post-modal-container')
+            modalContainer.style.display = 'none'
+        })
+    })
 
     initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), USER_POSTS_PAGE)

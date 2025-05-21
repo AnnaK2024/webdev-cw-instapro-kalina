@@ -45,6 +45,13 @@ export function renderPostsPageComponent({ appEl }) {
                     <div class="post-image-container">
                       <img class="post-image" src="${post.imageUrl}" id="zoomable-image">
                     </div>
+                    <div class="post-modal-container" style="display: none">
+                        <div class="post-modal-content">
+                            <p class="post-modal-header">Пользователи, которым понравился пост</p>
+                            <span class="button-close-modal">&times;</span>
+                        </div>
+                        <div class="post-modal-list"></div>
+                    </div>
                     <div class="post-likes">
                       <button data-post-id="${post.id}" class="like-button">
                       ${likeButtonImg}
@@ -52,13 +59,6 @@ export function renderPostsPageComponent({ appEl }) {
                       <p class="post-likes-text">
                         Нравится: <strong class="post-likes-count">${likeCountText}</strong>
                       </p>
-                      <div class="post-modal-container" style="display: none">
-                        <div class="post-modal-content">
-                            <p class="post-modal-header">Пользователи, которым понравился пост</p>
-                            <span class="button-close-modal">&times;</span>
-                        </div>
-                        <div class="post-modal-list"></div>
-                      </div>
                     </div>
                     <p class="post-text">
                       <span class="user-name">${clearingHtml(post.user.name)}</span>
@@ -82,6 +82,62 @@ export function renderPostsPageComponent({ appEl }) {
     </div>`
 
     appEl.innerHTML = appHtml
+
+    // Для каждого поста навесим обработчики на кнопку лайка и текст с количеством лайков
+    document.querySelectorAll('.post').forEach((postEl, index) => {
+        const post = posts[index]
+
+        const likeButton = postEl.querySelector('.like-button')
+        const likesCountText = postEl.querySelector('.post-likes-count')
+        const modalContainer = postEl.querySelector('.post-modal-container')
+        const modalList = modalContainer.querySelector('.post-modal-list')
+        const modalCloseBtn = modalContainer.querySelector(
+            '.button-close-modal',
+        )
+
+        // Функция для рендера списка лайкнувших
+        function renderLikesList() {
+            if (post.likes.length === 0) {
+                modalList.innerHTML = '<p>Пока никто не лайкнул этот пост</p>'
+            } else {
+                modalList.innerHTML = post.likes
+                    .map(
+                        (user) => `
+        <div class="like-user">
+          <img src="${user.imageUrl}" alt="${clearingHtml(user.name)}" class="like-user-image" />
+          <span>${clearingHtml(user.name)}</span>
+        </div>
+      `,
+                    )
+                    .join('')
+            }
+        }
+
+        // Показываем модалку при клике на кнопку лайка или на текст с количеством лайков
+        likeButton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            renderLikesList()
+            modalContainer.style.display = 'block'
+        })
+
+        likesCountText.addEventListener('click', (event) => {
+            event.stopPropagation()
+            renderLikesList()
+            modalContainer.style.display = 'block'
+        })
+
+        // Закрываем модальное окно по кнопке закрытия
+        modalCloseBtn.addEventListener('click', () => {
+            modalContainer.style.display = 'none'
+        })
+
+        // Также закрывать модалку при клике вне нее (по желанию)
+        modalContainer.addEventListener('click', (event) => {
+            if (event.target === modalContainer) {
+                modalContainer.style.display = 'none'
+            }
+        })
+    })
 
     initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), POSTS_PAGE)
