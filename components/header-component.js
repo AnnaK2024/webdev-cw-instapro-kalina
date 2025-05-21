@@ -24,7 +24,13 @@ export function renderHeaderComponent({ element }) {
       </button>
       ${
         user
-          ? `<button title="${user.name}" class="header-button logout-button">Выйти</button>`
+          ? `
+          <div class="user-menu">
+            <button title="${user.name}" class="header-button user-button">${user.name} ▼</button>
+            <div class="dropdown-menu" style="display: none;">
+              <button class="logout-button">Выйти</button>
+            </div>
+          </div>`
           : ""
       }  
   </div>
@@ -54,10 +60,26 @@ export function renderHeaderComponent({ element }) {
   });
 
   /**
-   * Обработчик клика по кнопке "Выйти".
-   * Если кнопка существует (т.е. пользователь авторизован), вызывает функцию `logout`.
+   * Обработчик клика по кнопке пользователя.
+   * Показывает или скрывает выпадающее меню.
    */
-  element.querySelector(".logout-button")?.addEventListener("click", logout);
+  const userButton = element.querySelector(".user-button");
+  const dropdownMenu = element.querySelector(".dropdown-menu");
+
+  userButton.addEventListener("click", () => {
+    dropdownMenu.style.display = dropdownMenu.style.display === "none" || dropdownMenu.style.display === "" ? "block" : "none";
+  });
+
+  /**
+   * Обработчик клика по кнопке "Выйти".
+   * Если кнопка существует (т.е. пользователь авторизован), вызывает функцию `logout` после подтверждения.
+   */
+  const logoutButton = element.querySelector(".logout-button");
+  logoutButton?.addEventListener("click", () => {
+    if (confirm("Вы уверены, что хотите выйти?")) {
+      logout();
+    }
+  });
 
   return element;
 }
