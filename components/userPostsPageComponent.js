@@ -100,6 +100,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
     const likeButtons = document.querySelectorAll('.like-button')
     likeButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
+            event.stopPropagation()
             const postId = button.dataset.postId
             const modalContainer = button
                 .closest('.post')
@@ -124,6 +125,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
     const closeModalButtons = document.querySelectorAll('.button-close-modal')
     closeModalButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
+            event.stopPropagation()
             const modalContainer = button.closest('.post-modal-container')
             modalContainer.style.display = 'none'
         })
