@@ -1,40 +1,42 @@
-import { POSTS_PAGE, USER_POSTS_PAGE } from '../routes.js'
-import { renderHeaderComponent } from './header-component.js'
-import { posts, goToPage, getToken } from '../index.js'
-import { formatDistanceToNow } from 'date-fns'
-import { ru } from 'date-fns/locale'
-import { clearingHtml } from '../helpers.js'
+import { POSTS_PAGE, USER_POSTS_PAGE } from '../routes.js';
+import { renderHeaderComponent } from './header-component.js';
+import { posts, goToPage, getToken } from '../index.js';
+import { formatDistanceToNow } from 'date-fns';
+import { ru } from 'date-fns/locale';
+import { clearingHtml } from '../helpers.js';
 import {
     initLikeComponent,
     renderModalLikesList,
-} from './initLikesComponent.js'
-import { deletePostComponent } from './deletePostComponent.js'
+} from './initLikesComponent.js';
+import { deletePostComponent } from './deletePostComponent.js';
 
 export function renderPostsPageComponent({ appEl }) {
     const postsHtml = posts
         .map((post, index) => {
-            const createdPostDate = post.createdAt
+            const createdPostDate = post.createdAt;
 
             const result = formatDistanceToNow(createdPostDate, {
                 addSuffix: true,
                 locale: ru,
-            })
+            });
 
             let likeButtonImg = post.isLiked
                 ? '<img src="./assets/images/like-active.svg"></img>'
-                : '<img src="./assets/images/like-not-active.svg"></img>'
+                : '<img src="./assets/images/like-not-active.svg"></img>';
 
-            let likeCountText
+            let likeCountText;
 
+            // Логика отображения количества лайков
             if (post.likes.length === 0) {
-                likeCountText = '0'
+                likeCountText = '0';
             } else if (post.likes.length === 1) {
-                likeCountText = `${clearingHtml(post.likes[0].name)}`
+                likeCountText = `${clearingHtml(post.likes[0].name)}`;
             } else if (post.likes.length === 2) {
-                likeCountText = `${clearingHtml(post.likes[0].name)}`
+                likeCountText = `${clearingHtml(post.likes[0].name)}, ${clearingHtml(post.likes[1].name)}`;
             } else {
-                likeCountText = `${post.likes.length}`
+                likeCountText = `${post.likes.length} пользователям`;
             }
+
             return `<li class="post" data-post-index="${index}"> 
                     <div class="post-header" data-user-id="${post.user.id}">
                         <div class="post-header__user-data">
@@ -43,7 +45,7 @@ export function renderPostsPageComponent({ appEl }) {
                         </div>
                     </div>
                     <div class="post-image-container">
-                      <img class="post-image" src="${post.imageUrl}" id="zoomable-image">
+                      <img class="post-image zoomable-image" src="${post.imageUrl}">
                     </div>
                     <div class="post-modal-container" style="display: none">
                         <div class="post-modal-content">
@@ -57,21 +59,20 @@ export function renderPostsPageComponent({ appEl }) {
                       ${likeButtonImg}
                       </button>
                       <p class="post-likes-text">
-                        Нравится: <strong class="post-likes-count">${likeCountText}</strong>
+                        Нравится: <strong class="post-likes-count" data-post-id="${post.id}">${likeCountText}</strong> 
                       </p>
                     </div>
                     <p class="post-text">
                       <span class="user-name">${clearingHtml(post.user.name)}</span>
                       ${clearingHtml(post.description)}
                     </p>
-                      <div class="footerPost" <p class="post-date">
-                        ${result}
-                      </p>
-                      <button data-post-id="${post.id}" class="delete-button delete-post-button">Удалить пост</button>
-                      </div>
-                  </li>`
+                    <div class="footerPost">
+                        <p class="post-date">${result}</p>
+                        <button data-post-id="${post.id}" class="delete-button delete-post-button">Удалить пост</button>
+                    </div>
+                  </li>`;
         })
-        .join('')
+        .join('');
 
     const appHtml = `
     <div class="page-container">
@@ -79,30 +80,35 @@ export function renderPostsPageComponent({ appEl }) {
       <ul class="posts">
         ${postsHtml}
       </ul>
-    </div>`
+    </div>`;
 
-    appEl.innerHTML = appHtml
+    appEl.innerHTML = appHtml;
 
-    initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
-    deletePostComponent(getToken(), POSTS_PAGE)
-    renderModalLikesList(posts)
+    // Инициализация компонентов
+    initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts);
+    deletePostComponent(getToken(), POSTS_PAGE);
+    renderModalLikesList(posts);
 
-    const image = document.getElementById('zoomable-image')
+    // Обработка увеличения изображения
+    const images = document.querySelectorAll('.zoomable-image');
+    images.forEach((image) => {
+        image.addEventListener('click', () => {
+            image.classList.toggle('zoomed');
+        });
+    });
 
-    image.addEventListener('click', () => {
-        image.classList.toggle('zoomed')
-    })
-
+    // Рендеринг заголовка
     renderHeaderComponent({
         element: document.querySelector('.header-container'),
-    })
+    });
 
+    // Обработка кликов по заголовку пользователя
     for (let userEl of document.querySelectorAll('.post-header')) {
         userEl.addEventListener('click', (event) => {
-            event.stopPropagation()
+            event.stopPropagation();
             goToPage(USER_POSTS_PAGE, {
                 userId: userEl.dataset.userId,
-            })
-        })
+            });
+        });
     }
 }

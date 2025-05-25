@@ -39,6 +39,7 @@ export const initLikeComponent = (
 
                 updatePostInPosts(updatePost.post, posts)
                 renderPostsPageComponent({ appEl, posts })
+                renderModalLikesList(posts)
             } catch (error) {
                 handleError(error)
             } finally {
@@ -107,12 +108,24 @@ export const renderModalLikesList = (posts, isUserLikes = false) => {
         likesListElement.append(...userItems)
     }
 
-    // Обработчик клика по лайкам
-    likeCountsElements.forEach((likeCountElement, index) => {
+    likeCountsElements.forEach((likeCountElement) => {
         likeCountElement.addEventListener('click', (event) => {
             event.stopPropagation()
-            const likesList = posts[index].likes
+
+            // Получаем postId из data-атрибута элемента
+            const postId = likeCountElement.dataset.postId
+
+            // Находим пост по ID
+            const post = posts.find((post) => post.id === postId)
+            if (!post) return // Если пост не найден, выходим из функции
+
+            // Получаем список лайков
+            const likesList = post.likes
+
+            // Рендерим список лайков
             renderLikesList(likesList)
+
+            // Показываем модальное окно
             modalContainer.style.display = 'flex'
         })
     })
@@ -123,5 +136,3 @@ export const renderModalLikesList = (posts, isUserLikes = false) => {
         modalContainer.style.display = 'none'
     })
 }
-
-  

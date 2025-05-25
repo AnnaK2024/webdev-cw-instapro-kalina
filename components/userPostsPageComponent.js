@@ -33,13 +33,13 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
             let likeCountText
 
             if (post.likes.length === 0) {
-                likeCountText = '0'
+                likeCountText = '0';
             } else if (post.likes.length === 1) {
-                likeCountText = `${clearingHtml(post.likes[0].name)}`
+                likeCountText = `${clearingHtml(post.likes[0].name)}`;
             } else if (post.likes.length === 2) {
-                likeCountText = `${clearingHtml(post.likes[0].name)}`
+                likeCountText = `${clearingHtml(post.likes[0].name)}, ${clearingHtml(post.likes[1].name)}`;
             } else {
-                likeCountText = `${post.likes.length}`
+                likeCountText = `${post.likes.length} пользователям`;
             }
 
             return `<li class="post" data-post-index="${index}"> 
@@ -50,7 +50,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                     </div>
                 </div>
                 <div class="post-image-container">
-                    <img class="post-image" src="${post.imageUrl}" id="zoomable-image">
+                    <img class="post-image zoomable-image" src="${post.imageUrl}">
                 </div>
                 <div class="post-modal-container" style="display: none">
                     <div class="post-modal-content">
@@ -64,7 +64,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                         ${likeButtonImg}
                     </button>
                     <p class="post-likes-text">
-                        Нравится: <strong class="post-likes-count">${likeCountText}</strong>
+                      Нравится: <strong class="post-likes-count" data-post-id="${post.id}">${likeCountText}</strong> 
                     </p>
                 </div>
                 <span class="user-name">${clearingHtml(post.user.name)}</span>
@@ -103,10 +103,12 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
 
     console.log('Актуальный список постов', posts)
 
-    const image = document.getElementById('zoomable-image')
+    const images = document.querySelectorAll('.zoomable-image')
 
-    image.addEventListener('click', () => {
-        image.classList.toggle('zoomed')
+    images.forEach((image) => {
+        image.addEventListener('click', () => {
+            image.classList.toggle('zoomed')
+        })
     })
 
     renderHeaderComponent({
