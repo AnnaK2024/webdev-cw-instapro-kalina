@@ -147,8 +147,6 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         toggleIcon.onclick = () => {
             const type = passwordInput.type === 'password' ? 'text' : 'password'
             passwordInput.type = type
-            // Можно заменить иконку по желанию
-            // Например, использовать разные SVG-иконки
         }
     }
 
