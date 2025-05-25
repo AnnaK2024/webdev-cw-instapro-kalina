@@ -83,62 +83,6 @@ export function renderPostsPageComponent({ appEl }) {
 
     appEl.innerHTML = appHtml
 
-    // Для каждого поста навесим обработчики на кнопку лайка и текст с количеством лайков
-    document.querySelectorAll('.post').forEach((postEl, index) => {
-        const post = posts[index]
-
-        const likeButton = postEl.querySelector('.like-button')
-        const likesCountText = postEl.querySelector('.post-likes-count')
-        const modalContainer = postEl.querySelector('.post-modal-container')
-        const modalList = modalContainer.querySelector('.post-modal-list')
-        const modalCloseBtn = modalContainer.querySelector(
-            '.button-close-modal',
-        )
-
-        // Функция для рендера списка лайкнувших
-        function renderLikesList() {
-            if (post.likes.length === 0) {
-                modalList.innerHTML = '<p>Пока никто не лайкнул этот пост</p>'
-            } else {
-                modalList.innerHTML = post.likes
-                    .map(
-                        (user) => `
-        <div class="like-user">
-          <img src="${user.imageUrl}" alt="${clearingHtml(user.name)}" class="like-user-image" />
-          <span>${clearingHtml(user.name)}</span>
-        </div>
-      `,
-                    )
-                    .join('')
-            }
-        }
-
-        // Показываем модалку при клике на кнопку лайка или на текст с количеством лайков
-        likeButton.addEventListener('click', (event) => {
-            event.stopPropagation()
-            renderLikesList()
-            modalContainer.style.display = 'block'
-        })
-
-        likesCountText.addEventListener('click', (event) => {
-            event.stopPropagation()
-            renderLikesList()
-            modalContainer.style.display = 'block'
-        })
-
-        // Закрываем модальное окно по кнопке закрытия
-        modalCloseBtn.addEventListener('click', () => {
-            modalContainer.style.display = 'none'
-        })
-
-        // Также закрывать модалку при клике вне нее (по желанию)
-        modalContainer.addEventListener('click', (event) => {
-            if (event.target === modalContainer) {
-                modalContainer.style.display = 'none'
-            }
-        })
-    })
-
     initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), POSTS_PAGE)
     renderModalLikesList(posts)

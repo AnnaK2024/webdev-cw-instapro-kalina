@@ -88,7 +88,7 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
                 <h3 class="post-user-heading">Публикации пользователя</h3> 
                 <div class="post-user-content">
                     <img class="post-header__user-image post-user-header-image" src="${authorPosts.imageUrl}">
-                    <p class="post-user-name">${authorPosts.name}</p>
+                    <p class="post-user-name">${clearingHtml(authorPosts.name)}</p>
                 </div>
             </div> 
             <ul class="posts">${postHtml}</ul>
@@ -96,40 +96,6 @@ export function renderUserPostsPageComponent({ appEl, posts }) {
 
     console.log(user)
     appEl.innerHTML = appHtml
-
-    const likeButtons = document.querySelectorAll('.like-button')
-    likeButtons.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.stopPropagation()
-            const postId = button.dataset.postId
-            const modalContainer = button
-                .closest('.post')
-                .querySelector('.post-modal-container')
-
-            // Переключаем отображение модального окна
-            modalContainer.style.display =
-                modalContainer.style.display === 'none' ? 'block' : 'none'
-
-            // Заполняем модальное окно списком лайков
-            const likesList = modalContainer.querySelector('.post-modal-list')
-            likesList.innerHTML = '' // Очищаем предыдущий контент
-
-            // Предполагая, что `post.likes` доступен здесь
-            const postLikes = posts.find((post) => post.id === postId).likes
-            postLikes.forEach((like) => {
-                likesList.innerHTML += `<p>${clearingHtml(like.name)}</p>`
-            })
-        })
-    })
-
-    const closeModalButtons = document.querySelectorAll('.button-close-modal')
-    closeModalButtons.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.stopPropagation()
-            const modalContainer = button.closest('.post-modal-container')
-            modalContainer.style.display = 'none'
-        })
-    })
 
     initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), posts)
     deletePostComponent(getToken(), USER_POSTS_PAGE)
