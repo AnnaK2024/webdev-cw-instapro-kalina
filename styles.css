@@ -348,4 +348,5 @@ input[type='text'] {
 }
 .post-modal-list {
     display: flex;
+    flex-wrap: wrap;
 }

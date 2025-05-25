@@ -68,20 +68,25 @@ const handleError = (error) => {
 
 export const renderModalLikesList = (posts, isUserLikes = false) => {
     const likeCountsElements = document.querySelectorAll('.post-likes-count')
+    const modalContainer = document.querySelector('.post-modal-container')
+    const likesListElement = document.querySelector('.post-modal-list')
+    const closeModalButton = document.querySelector('.button-close-modal')
 
     // Общая функция для рендера списка лайкнувших
-    const renderLikesList = (likesListElement, likesList) => {
+    const renderLikesList = (likesList) => {
         likesListElement.innerHTML = ''
 
         const userItems = likesList
             .map((likes) => {
+                // В зависимости от типа данных выбираем свойства
                 const userId = isUserLikes ? likes._id : likes.id
                 const userName = likes.name
                 const userImageUrl = isUserLikes ? likes.imageUrl : null
 
+                // Находим пост пользователя, если нужно
                 const userPost = posts.find((post) => post.user.id === userId)
 
-                if (!userPost && !userImageUrl) return null
+                if (!userPost && !userImageUrl) return null // пропускаем, если данных нет
 
                 const userItem = document.createElement('div')
                 userItem.classList.add('user-item')
@@ -107,38 +112,27 @@ export const renderModalLikesList = (posts, isUserLikes = false) => {
         likeCountElement.addEventListener('click', (event) => {
             event.stopPropagation()
 
-            // Находим контейнер поста (например, ближайший родитель с классом 'post')
-            const postElement = likeCountElement.closest('.post')
-            if (!postElement) return
-
-            // Теперь ищем модалку и элементы внутри этого поста
-            const modalContainer = postElement.querySelector('.post-modal-container')
-            const likesListElement = postElement.querySelector('.post-modal-list')
-            const closeModalButton = postElement.querySelector('.button-close-modal')
-
-            if (!modalContainer || !likesListElement || !closeModalButton) return
-
-            // Получаем postId из data-атрибута
+            // Получаем postId из data-атрибута элемента
             const postId = likeCountElement.dataset.postId
 
             // Находим пост по ID
             const post = posts.find((post) => post.id === postId)
-            if (!post) return
+            if (!post) return // Если пост не найден, выходим из функции
 
             // Получаем список лайков
             const likesList = post.likes
 
-            // Рендерим список лайков в найденный элемент
-            renderLikesList(likesListElement, likesList)
+            // Рендерим список лайков
+            renderLikesList(likesList)
 
             // Показываем модальное окно
             modalContainer.style.display = 'flex'
-
-            // Обработчик закрытия модалки
-            closeModalButton.onclick = (e) => {
-                e.stopPropagation()
-                modalContainer.style.display = 'none'
-            }
         })
+    })
+
+    // Обработчик закрытия модалки
+    closeModalButton.addEventListener('click', (event) => {
+        event.stopPropagation()
+        modalContainer.style.display = 'none'
     })
 }
