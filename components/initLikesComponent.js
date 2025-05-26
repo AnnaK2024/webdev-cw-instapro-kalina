@@ -68,71 +68,79 @@ const handleError = (error) => {
 
 export const renderModalLikesList = (posts, isUserLikes = false) => {
     const likeCountsElements = document.querySelectorAll('.post-likes-count')
-    const modalContainer = document.querySelector('.post-modal-container')
-    const likesListElement = document.querySelector('.post-modal-list')
-    const closeModalButton = document.querySelector('.button-close-modal')
-
-    // Общая функция для рендера списка лайкнувших
-    const renderLikesList = (likesList) => {
-        likesListElement.innerHTML = ''
-
-        const userItems = likesList
-            .map((likes) => {
-                // В зависимости от типа данных выбираем свойства
-                const userId = isUserLikes ? likes._id : likes.id
-                const userName = likes.name
-                const userImageUrl = isUserLikes ? likes.imageUrl : null
-
-                // Находим пост пользователя, если нужно
-                const userPost = posts.find((post) => post.user.id === userId)
-
-                if (!userPost && !userImageUrl) return null // пропускаем, если данных нет
-
-                const userItem = document.createElement('div')
-                userItem.classList.add('user-item')
-
-                const userImage = document.createElement('img')
-                userImage.src = userImageUrl || userPost.user.imageUrl
-                userImage.classList.add('post-header__user-image')
-
-                const userNameEl = document.createElement('p')
-                userNameEl.textContent = userName
-
-                userItem.appendChild(userImage)
-                userItem.appendChild(userNameEl)
-
-                return userItem
-            })
-            .filter((item) => item !== null)
-
-        likesListElement.append(...userItems)
-    }
+    const closeModalButtons = document.querySelectorAll('.button-close-modal')
 
     likeCountsElements.forEach((likeCountElement) => {
         likeCountElement.addEventListener('click', (event) => {
             event.stopPropagation()
 
-            // Получаем postId из data-атрибута элемента
             const postId = likeCountElement.dataset.postId
-
-            // Находим пост по ID
             const post = posts.find((post) => post.id === postId)
-            if (!post) return // Если пост не найден, выходим из функции
+            if (!post) return
 
-            // Получаем список лайков
             const likesList = post.likes
 
-            // Рендерим список лайков
-            renderLikesList(likesList)
+            // Находим контейнер модалки и список лайков внутри этого поста
+            const postElement = likeCountElement.closest('.post')
+            const modalContainer = postElement.querySelector(
+                '.post-modal-container',
+            )
+            const likesListElement =
+                modalContainer.querySelector('.post-modal-list')
 
-            // Показываем модальное окно
+            // Рендерим список лайков
+            renderLikesList(likesList, likesListElement, posts, isUserLikes)
+
             modalContainer.style.display = 'flex'
         })
     })
 
-    // Обработчик закрытия модалки
-    closeModalButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        modalContainer.style.display = 'none'
+    // Закрытие всех модалок
+    closeModalButtons.forEach((closeModalButton) => {
+        closeModalButton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            const postElement = closeModalButton.closest('.post')
+            if (!postElement) return
+            const modalContainer = postElement.querySelector(
+                '.post-modal-container',
+            )
+            modalContainer.style.display = 'none'
+        })
     })
+}
+
+// Переместите renderLikesList за пределы
+const renderLikesList = (likesList, container, posts, isUserLikes) => {
+    container.innerHTML = ''
+
+    const userItems = likesList
+        .map((likes) => {
+            const userId = isUserLikes ? likes._id : likes.id
+            const userName = likes.name
+            const userImageUrl = isUserLikes ? likes.imageUrl : null
+
+            const userPost = posts.find(
+                (post) => post.user.id === userId,
+            )
+
+            if (!userPost && !userImageUrl) return null
+
+            const userItem = document.createElement('div')
+            userItem.classList.add('user-item')
+
+            const userImage = document.createElement('img')
+            userImage.src = userImageUrl || userPost.user.imageUrl
+            userImage.classList.add('post-header__user-image')
+
+            const userNameEl = document.createElement('p')
+            userNameEl.textContent = userName
+
+            userItem.appendChild(userImage)
+            userItem.appendChild(userNameEl)
+
+            return userItem
+        })
+        .filter((item) => item !== null)
+
+    container.append(...userItems)
 }
