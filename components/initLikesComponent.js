@@ -78,8 +78,10 @@ const renderLikesList = (likesList, container, posts) => {
             // Найдите пост, соответствующий текущему пользователю
             const userPost = posts.find((post) => post.user.id === userId);
 
+            console.log(`Processing user: ${userName}, ID: ${userId}, User Post:`, userPost); // Отладка
+
             // Если нет имени и нет изображения пользователя, пропустите этого пользователя
-            if (!userName && !userImageUrl) return null;
+            if (!userName && !userPost && !userImageUrl) return null;
 
             const userItem = document.createElement('div');
             userItem.classList.add('user-item');
@@ -100,6 +102,7 @@ const renderLikesList = (likesList, container, posts) => {
 
     container.append(...userItems); // Добавьте всех пользователей в контейнер
 }
+
 
 export const renderModalLikesList = (posts, isUserLikes = false) => {
     const likeCountsElements = document.querySelectorAll('.post-likes-count')
