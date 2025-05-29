@@ -1,6 +1,6 @@
-import { POSTS_PAGE, USER_POSTS_PAGE } from '../routes.js'
+import { USER_POSTS_PAGE } from '../routes.js'
 import { renderHeaderComponent } from './header-component.js'
-import { posts, goToPage, getToken } from '../index.js'
+import { getToken, goToPage, user } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { clearingHtml } from '../helpers.js'
@@ -10,8 +10,14 @@ import {
 } from './initLikesComponent.js'
 import { deletePostComponent } from './deletePostComponent.js'
 
-export function renderPostsPageComponent({ appEl }) {
-    const postsHtml = posts
+export function renderUserPostsPageComponent({ appEl, posts }) {
+    if (!posts || posts.length === 0) {
+        appEl.innerHTML = `<p>У этого пользователя нет публикаций</p>`
+        return
+    }
+    const authorPosts = posts[0].user
+
+    const postHtml = posts
         .map((post, index) => {
             const createdPostDate = post.createdAt
 
@@ -26,15 +32,14 @@ export function renderPostsPageComponent({ appEl }) {
 
             let likeCountText
 
-            // Логика отображения количества лайков
             if (post.likes.length === 0) {
-                likeCountText = '0'
+                likeCountText = '0';
             } else if (post.likes.length === 1) {
-                likeCountText = `${clearingHtml(post.likes[0].name)}`
+                likeCountText = `${clearingHtml(post.likes[0].name)}`;
             } else if (post.likes.length === 2) {
-                likeCountText = `${clearingHtml(post.likes[0].name)}, ${clearingHtml(post.likes[1].name)}`
+                likeCountText = `${clearingHtml(post.likes[0].name)}, ${clearingHtml(post.likes[1].name)}`;
             } else {
-                likeCountText = `${post.likes.length} пользователям`
+                likeCountText = `${post.likes.length} пользователям`;
             }
 
             return `<li class="post" data-post-index="${index}"> 
@@ -59,50 +64,59 @@ export function renderPostsPageComponent({ appEl }) {
                         ${likeButtonImg}
                     </button>
                     <p class="post-likes-text">
-                        Нравится: <strong class="post-likes-count" data-post-id="${post.id}">${likeCountText}</strong> 
+                      Нравится: <strong class="post-likes-count" data-post-id="${post.id}">${likeCountText}</strong> 
                     </p>
                 </div>
+                <span class="user-name">${clearingHtml(post.user.name)}</span>
                 <p class="post-text">
-                    <span class="user-name">${clearingHtml(post.user.name)}</span>
                     ${clearingHtml(post.description)}
                 </p>
                 <div class="footerPost">
-                    <p class="post-date">${result}</p>
+                    <p class="post-date">
+                        ${result}
+                    </p>
                     <button data-post-id="${post.id}" class="delete-button delete-post-button">Удалить пост</button>
                 </div>
-                </li>`
+            </li>`
         })
         .join('')
 
     const appHtml = `
-    <div class="page-container">
-      <div class="header-container"></div>
-      <ul class="posts">
-        ${postsHtml}
-      </ul>
-    </div>`
+        <div class="page-container">
+            <div class="header-container"></div>
+            <div class="post-user-header">
+                <h3 class="post-user-heading">Публикации пользователя</h3> 
+                <div class="post-user-content">
+                    <img class="post-header__user-image post-user-header-image" src="${authorPosts.imageUrl}">
+                    <p class="post-user-name">${clearingHtml(authorPosts.name)}</p>
+                </div>
+            </div> 
+            <ul class="posts">${postHtml}</ul>
+        </div>`
 
+    console.log(user)
     appEl.innerHTML = appHtml
 
-    // Инициализация компонентов
-    initLikeComponent(renderPostsPageComponent, appEl, getToken(), posts)
-    deletePostComponent(getToken(), POSTS_PAGE)
-    renderModalLikesList(posts)
+    initLikeComponent(renderUserPostsPageComponent, appEl, getToken(), posts)
+    deletePostComponent(getToken(), USER_POSTS_PAGE)
+    renderModalLikesList(posts, true)
 
-    // Обработка увеличения изображения
+    console.log('Актуальный список постов', posts)
+
     const images = document.querySelectorAll('.zoomable-image')
+
     images.forEach((image) => {
         image.addEventListener('click', () => {
             image.classList.toggle('zoomed')
         })
     })
 
-    // Рендеринг заголовка
     renderHeaderComponent({
         element: document.querySelector('.header-container'),
+        userName: authorPosts.name, // Добавляем имя пользователя
+        userImage: authorPosts.imageUrl, // Добавляем изображение пользователя
     })
 
-    // Обработка кликов по заголовку пользователя
     for (let userEl of document.querySelectorAll('.post-header')) {
         userEl.addEventListener('click', (event) => {
             event.stopPropagation()
